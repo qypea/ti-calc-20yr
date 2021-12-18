@@ -95,6 +95,8 @@ ln -s "$(pwd)/d_drive" ~/.wine/dosdevices/d:
 I then created a bat file(`d_drive/tasm/asm.bat`) similar to the one listed in the tutorial, but with some changes for my file paths. I ran `unix2dos d_drive/tasm/asm.bat` to convert it to a dos newline file.
 ```
 @echo off
+d:
+cd tasm
 echo ==== Now assembling %1.z80 for the TI-83 Plus ====
 tasm -80 -i -b d:\src\%1.z80 d:\exec\%1.bin
 if errorlevel 1 goto ERRORS
@@ -122,3 +124,22 @@ asm hello
 I can then load the program on tilem and run it. To load it I ran `tilem2 d_drive/exec/HELLO.8XP`, then on the emulator selected `Asm(` from the catalog, then the program. So `Asm(prgmHELLO`, then hit enter.
 
 ![screenshot001](https://user-images.githubusercontent.com/1694406/146652023-a1733b91-04b1-4d9d-aafe-8024f761c38f.png)
+
+
+I'm planning to do this a bunch, so I made a wrapper to make it easier to run this repeatedly. 
+```
+#!/bin/sh
+
+set -e
+set -u
+
+src=$1
+program_name=$(basename $src .z80)
+this=$(dirname $0)
+
+cp ${src} ${this}/d_drive/src/
+
+wine cmd /C d:/tasm/asm.bat ${program_name}
+
+mv ${this}/d_drive/exec/*.8XP ./
+```
