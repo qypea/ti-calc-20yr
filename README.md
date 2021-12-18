@@ -28,3 +28,42 @@ Once I had the image it was as easy as opening TiLP2 and selecting File->Send Fi
 
 ## Emulation
 
+Of course I'd love to be able to emulate my calculator on my laptop both for convenience and so I can test programs without risk of bricking the real calculator.
+
+### Install emulator
+
+For emulation I decided to go with tilem, which is easily installed on ubuntu(`sudo apt install tilem`) and seems to work well.
+
+### Get ROM image
+
+TI's ROM images are licensed tightly, so you won't find any legally posted online(and don't ask me for them). Instead you'll need to either feed tilem an OS update package or dump the ROM from your own calculator. I chose the latter, although in hindsight I think it would have been easier to do the OS update package method. I wanted to get the ROM for _my_ calculator though, and it was fun.
+
+TiLP2 has support for ROM dumping under Tools->Dump ROM and it almost works out of the box. Except, due to debian package rules they patch TiLP2 to not contain the ROM dump program that gets loaded on the calculator to read out the ROM. So I had to build a version of TiLP2 with the ROM dumping support reenabled. To do this, I found a clue [here](https://sourceforge.net/p/tilp/bugs/217/) and rebuilt the tilp package without the patch to get it working.
+
+Roughly the steps were:
+```
+apt-get source libticalcs
+cd libticalcs-1.1.9+dfsg/
+vi debian/patches/series   # Delete the one line describing the patch
+patch --reverse -i debian/patches/ticalcs2-external-rom-dumpers.patch -p1
+dch --local qypea
+debuild -us -uc
+cd ..
+sudo apt install ./libticalcs2-12_1.1.9+dfsg-2qypea2_amd64.deb
+```
+
+After this I closed and opened TiLP2, ran Tools->Dump ROM, and sat back until the file was downloaded. At that point I opened `tilem`, opened the ROM image I had dumped, right-clicked and selected Preferences.
+* Emulation Speed: Limit to actual...
+* Display: Emulate grayscale, Use smooth scaling, Use skin: `/usr/share/tilem2/skins/ti83p.skn`
+
+### Skinning
+
+Hey, that's a calculator. Not quite _my_ calculator though. Lets make a skin for it so it looks like _my_ calculator.
+
+To create a skin for my calculator I started by taking a picture of my calculator from straight down, copying it over to my computer. I then cropped the image down, resized it to the same size as the basic TI-83+ skin(320px wide as I recall). I then ran `skinedit`, created a new skin for my calculator based on that image.
+
+In SkinEdit I needed to define where the screen and all the buttons are. To do this select Edit->LCD Position, draw a box, then right-click. Then select Edit->Key Positions, select a key, draw a box, then right-click. Note that you have to right-click each time to save the box. I went through this all twice; not right clicking the first time and wondering where they went. Once I had that done I saved the skin, selected it in tilem. It worked, Yay
+
+![Screenshot_2021-12-18_09-36-54](https://user-images.githubusercontent.com/1694406/146650555-e97848d6-eab1-4ea7-b08a-438b95969f56.png)
+
+I've included my skin file in the `skin` folder of this repo.
