@@ -78,4 +78,47 @@ Day 01 lesson and I've already hit a snag. TASM is in theory available for linux
 
 ### Assembler in wine
 
-I'm currently trying to run the TASM assembler in wine, see if I can get that working. Will update as it goes.
+While waiting to try to get the TASM source and compile it for linux I decided to try running the shareware binaries under wine. Firstly, install wine and dosbox(`sudo apt install wine dosbox`), then lets set up a drive for our tasm work so it can find the different programs and files needed. 
+
+```
+mkdir d_drive
+mkdir d_drive/src
+mkdir d_drive/tasm
+mv tools/src/tasm32/TASM.EXE d_drive/tasm/
+mv tools/src/tasm32/TASM80.TAB d_drive/tasm/
+cp ../83pa28d/stuff/ti83plus.inc d_drive/tasm/TI83PLUS.inc
+mv tools/src/DEVPAC8X.COM d_drive/tasm/
+mkdir d_drive/exec
+ln -s "$(pwd)/d_drive" ~/.wine/dosdevices/d:
+```
+
+I then created a bat file(`d_drive/tasm/asm.bat`) similar to the one listed in the tutorial, but with some changes for my file paths. I ran `unix2dos d_drive/tasm/asm.bat` to convert it to a dos newline file.
+```
+@echo off
+echo ==== Now assembling %1.z80 for the TI-83 Plus ====
+tasm -80 -i -b d:\src\%1.z80 d:\exec\%1.bin
+if errorlevel 1 goto ERRORS
+rem This is necessary because of a DevPac8x bug
+cd d:\exec
+d:\tasm\devpac8x %1
+cd d:\tasm
+echo ==== Job finished. Program saved as %1.8xp ====
+goto DONE
+:ERRORS
+echo ==== Errors!!! ====
+:DONE
+del d:\src\%1.lst > NUL
+del d:\exec\%1.bin > NUL
+echo ==== Done ====
+```
+
+Run `wine cmd` and confirm you can assembly the hello world program
+```
+d:
+cd tasm
+asm hello
+```
+
+I can then load the program on tilem and run it. To load it I ran `tilem2 d_drive/exec/HELLO.8XP`, then on the emulator selected `Asm(` from the catalog, then the program. So `Asm(prgmHELLO`, then hit enter.
+
+![screenshot001](https://user-images.githubusercontent.com/1694406/146652023-a1733b91-04b1-4d9d-aafe-8024f761c38f.png)
