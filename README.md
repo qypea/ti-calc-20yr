@@ -66,4 +66,4 @@ In SkinEdit I needed to define where the screen and all the buttons are. To do t
 
 ![Screenshot_2021-12-18_09-36-54](https://user-images.githubusercontent.com/1694406/146650555-e97848d6-eab1-4ea7-b08a-438b95969f56.png)
 
-I've included my skin file in the `skin` folder of this repo.
+I've included my skin file in this repo as [ti83psilver.skn](ti83psilver.skn).
