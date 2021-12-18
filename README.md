@@ -67,3 +67,15 @@ In SkinEdit I needed to define where the screen and all the buttons are. To do t
 ![Screenshot_2021-12-18_09-36-54](https://user-images.githubusercontent.com/1694406/146650555-e97848d6-eab1-4ea7-b08a-438b95969f56.png)
 
 I've included my skin file in this repo as [ti83psilver.skn](ti83psilver.skn).
+
+## Writing and compiling assembly
+
+Being a software engineer by day, I want to program this thing. It'll be fun(I know, I'm sick that way). I downloaded the [Learn TI-83 Plus Assembly In 28 Days v2.0](https://www.ticalc.org/pub/text/z80/83pa28d.zip) tutorial and am trying to follow it along.
+
+### Assembler
+
+Day 01 lesson and I've already hit a snag. TASM is in theory available for linux, but the shareware binaries posted on ticalc and similar sites are all for windows/dos. I've sent some emails to Tom Anderson to see if I can still purchase the full version by mailing him a check, but will have to see how that works out. Its almost 20 years since the release of version 3.2, so who knows if he's still at that address or even has the sources any more. I'll update this doc as I learn more.
+
+### Assembler in wine
+
+I'm currently trying to run the TASM assembler in wine, see if I can get that working. Will update as it goes.
