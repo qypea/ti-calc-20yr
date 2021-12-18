@@ -142,4 +142,5 @@ cp ${src} ${this}/d_drive/src/
 wine cmd /C d:/tasm/asm.bat ${program_name}
 
 mv ${this}/d_drive/exec/*.8XP ./
+rm ${this}/d_drive/src/*.z80
 ```
